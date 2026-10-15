@@ -429,6 +429,13 @@ class TestVllmDrift:
         assert resp.kv_transfer.kv_port is None
         assert resp.kv_transfer.kv_connector == "NixlConnector"
 
+    def test_removed_kv_transfer_config_is_reported(self):
+        cfg = _make_vllm_config(kv_transfer_config=_make_kv_transfer_config())
+        del cfg.kv_transfer_config
+        resp = _build_response(cfg, ["m"])
+        assert resp.kv_transfer is None
+        assert drift_events() == ["SimpleNamespace.kv_transfer_config is not available"]
+
     def test_removed_sub_config_nulls_its_section_only(self):
         cfg = _make_vllm_config(max_model_len=4096)
         del cfg.parallel_config

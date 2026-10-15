@@ -98,7 +98,7 @@ def _served_names(vllm_config: "VllmConfig | None", args: Namespace) -> list[str
 
 
 def _build_kv_transfer_info(vllm_config: "VllmConfig | None") -> KVTransferInfo | None:
-    kv_transfer_cfg = getattr(vllm_config, "kv_transfer_config", None)
+    kv_transfer_cfg = read_attr(vllm_config, "kv_transfer_config")
     if kv_transfer_cfg is None:
         return None
 
